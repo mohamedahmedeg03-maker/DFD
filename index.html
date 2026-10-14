@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DFD – مخطط سياق نظام سيكوباتي</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--paper:#fff;--ink:#34423f;--mute:#7b8682;--line:#dfe6e2;--frame:#b9c6bf;--hl:#3f6358;--sysf:#eef4f0;--sysb:#6b8a7c;--c-patient:#8a82b8;--c-doctor:#c58f87;--c-admin:#c2a566;--c-payment:#7fa58e;--c-sms:#8aa4b8;--c-video:#7eaaa6;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme="dark"]{--bg:#1c211f;--paper:#232927;--ink:#e3e8e5;--mute:#98a39e;--line:#38413d;--frame:#4a5550;--hl:#9fd0bd;--sysf:#2b3430;--sysb:#8fb2a3}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Cairo',Tahoma,Arial,sans-serif;padding:18px 12px 40px}
+.page{max-width:900px;margin:0 auto;background:var(--paper);border:1.5px solid var(--frame);outline:1px solid var(--line);outline-offset:-7px;border-radius:6px;padding:26px 22px 18px;box-shadow:0 4px 22px rgba(60,80,70,.08)}
+.hd{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:2px solid var(--sysb);padding-bottom:8px;margin-bottom:8px}
+.hd b{font-size:22px;font-weight:800;letter-spacing:.3px;color:var(--hl)}
+.hd button{font:inherit;font-size:13px;padding:5px 12px;border:1px solid var(--frame);border-radius:20px;background:transparent;color:var(--ink);cursor:pointer}
+.tip{color:var(--mute);font-size:13px;margin:0 0 6px;text-align:center}
+.sc{overflow-x:auto}
+svg{display:block;width:100%;min-width:640px;height:auto}
+.dv{stroke:var(--sysb);stroke-width:.8;opacity:.5}
+.bx{fill:var(--paper);stroke:var(--ink);stroke-width:1.3}
+.sysbox{fill:var(--sysf);stroke:var(--sysb);stroke-width:1.6}
+.ln{fill:none;stroke:var(--ink);stroke-width:1.15}
+.lb{font-size:11.5px;fill:var(--ink)}
+.nm{font-size:15px;font-weight:700;fill:var(--ink)}
+.sys{font-size:22px;font-weight:800;fill:var(--hl)}
+.ent{cursor:pointer;outline:none}
+.fl,.ent{transition:opacity .2s}
+svg[data-f] .fl:not(.hl),svg[data-f] .ent:not(.hl){opacity:.14}
+svg[data-f] .fl.hl .ln{stroke-width:2.2}
+svg[data-f] .fl.hl .lb{font-weight:700}
+svg[data-f] .ent.hl .bx{stroke-width:2.2}
+.ent[data-e="patient"] .bx{stroke:var(--c-patient);fill:color-mix(in srgb,var(--c-patient) 16%,var(--paper))}.e-patient .ln{stroke:var(--c-patient)}tr[data-e="patient"] th{border-right:5px solid var(--c-patient)}.ent[data-e="doctor"] .bx{stroke:var(--c-doctor);fill:color-mix(in srgb,var(--c-doctor) 16%,var(--paper))}.e-doctor .ln{stroke:var(--c-doctor)}tr[data-e="doctor"] th{border-right:5px solid var(--c-doctor)}.ent[data-e="admin"] .bx{stroke:var(--c-admin);fill:color-mix(in srgb,var(--c-admin) 16%,var(--paper))}.e-admin .ln{stroke:var(--c-admin)}tr[data-e="admin"] th{border-right:5px solid var(--c-admin)}.ent[data-e="payment"] .bx{stroke:var(--c-payment);fill:color-mix(in srgb,var(--c-payment) 16%,var(--paper))}.e-payment .ln{stroke:var(--c-payment)}tr[data-e="payment"] th{border-right:5px solid var(--c-payment)}.ent[data-e="sms"] .bx{stroke:var(--c-sms);fill:color-mix(in srgb,var(--c-sms) 16%,var(--paper))}.e-sms .ln{stroke:var(--c-sms)}tr[data-e="sms"] th{border-right:5px solid var(--c-sms)}.ent[data-e="video"] .bx{stroke:var(--c-video);fill:color-mix(in srgb,var(--c-video) 16%,var(--paper))}.e-video .ln{stroke:var(--c-video)}tr[data-e="video"] th{border-right:5px solid var(--c-video)}
+.cap{text-align:center;font-size:17px;margin:12px 0 4px;font-weight:600;color:var(--hl)}
+table{width:100%;border-collapse:collapse;margin-top:16px;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:right;vertical-align:top;line-height:1.8}
+thead th{background:var(--sysb);color:#fff;border-color:var(--sysb)}
+tbody th{white-space:nowrap}
+tr.hl td,tr.hl th{background:color-mix(in srgb,var(--hl) 12%,var(--paper))}
+.pn{text-align:center;color:var(--mute);margin-top:14px;font-size:14px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{body{background:#fff;padding:0}.page{box-shadow:none}.hd button,.tip{display:none}}
+</style></head><body>
+<main class="page">
+<div class="hd"><b>DFD_Diagram</b><button id="th">الوضع الداكن / الفاتح</button></div>
+<p class="tip">مرّر الماوس أو اضغط على أي كيان لتمييز تدفقاته</p>
+<div class="sc"><svg id="dfd" viewBox="0 0 680 790" role="img" aria-labelledby="t d"><title id="t">مخطط السياق DFD المستوى 0 لنظام سيكوباتي</title><desc id="d">النظام في المنتصف وحوله ستة كيانات خارجية وتدفقات بيانات مرسومة كخطوط متوازية بأسهم.</desc><defs><marker id="ah-patient" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 1L10 5L0 9z" fill="#8a82b8"/></marker><marker id="ah-doctor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 1L10 5L0 9z" fill="#c58f87"/></marker><marker id="ah-admin" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 1L10 5L0 9z" fill="#c2a566"/></marker><marker id="ah-payment" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 1L10 5L0 9z" fill="#7fa58e"/></marker><marker id="ah-sms" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 1L10 5L0 9z" fill="#8aa4b8"/></marker><marker id="ah-video" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 1L10 5L0 9z" fill="#7eaaa6"/></marker></defs>
+<rect class="sysbox" x="150" y="300" width="380" height="170" rx="4"/>
+<text class="lb" x="160" y="291" text-anchor="start">0</text>
+<text class="sys" x="340" y="326" text-anchor="middle" dominant-baseline="central">النظام</text>
+<text class="lb" x="340" y="348" text-anchor="middle" dominant-baseline="central">اطمن</text>
+<line class="dv" x1="175" y1="362" x2="505" y2="362"/>
+<text class="lb" x="255" y="384" text-anchor="middle" dominant-baseline="central">• إدارة الحساب والدخول</text><text class="lb" x="425" y="384" text-anchor="middle" dominant-baseline="central">• الدفع والفواتير</text>
+<text class="lb" x="255" y="408" text-anchor="middle" dominant-baseline="central">• المواعيد والحجز</text><text class="lb" x="425" y="408" text-anchor="middle" dominant-baseline="central">• الاختبارات والتقدم</text>
+<text class="lb" x="255" y="432" text-anchor="middle" dominant-baseline="central">• الجلسات عن بُعد</text><text class="lb" x="425" y="432" text-anchor="middle" dominant-baseline="central">• التقارير والموافقات</text>
+<text class="lb" x="255" y="456" text-anchor="middle" dominant-baseline="central">• المراسلة (الشات)</text><text class="lb" x="425" y="456" text-anchor="middle" dominant-baseline="central">• الإشعارات والمتابعة</text>
+<g class="fl e-admin"><polyline class="ln" points="108,60 300,60 300,300" marker-end="url(#ah-admin)"/><text class="lb" x="204" y="53" text-anchor="middle" dominant-baseline="central">إدارة المستخدمين</text></g>
+<g class="fl e-admin"><polyline class="ln" points="108,74 290,74 290,300" marker-end="url(#ah-admin)"/><text class="lb" x="199" y="67" text-anchor="middle" dominant-baseline="central">تحديد الصلاحيات</text></g>
+<g class="fl e-admin"><polyline class="ln" points="108,88 280,88 280,300" marker-end="url(#ah-admin)"/><text class="lb" x="194" y="81" text-anchor="middle" dominant-baseline="central">الفروع والأسعار</text></g>
+<g class="fl e-admin"><polyline class="ln" points="108,102 270,102 270,300" marker-end="url(#ah-admin)"/><text class="lb" x="189" y="95" text-anchor="middle" dominant-baseline="central">محتوى الاسترخاء</text></g>
+<g class="fl e-admin"><polyline class="ln" points="260,300 260,116 108,116" marker-end="url(#ah-admin)"/><text class="lb" x="184" y="109" text-anchor="middle" dominant-baseline="central">إشعارات الغياب</text></g>
+<g class="fl e-admin"><polyline class="ln" points="250,300 250,130 108,130" marker-end="url(#ah-admin)"/><text class="lb" x="179" y="123" text-anchor="middle" dominant-baseline="central">تنبيهات أمنية</text></g>
+<g class="fl e-admin"><polyline class="ln" points="108,144 240,144 240,300" marker-end="url(#ah-admin)"/><text class="lb" x="174" y="137" text-anchor="middle" dominant-baseline="central">مواعيد العمل</text></g>
+<g class="fl e-admin"><polyline class="ln" points="230,300 230,158 108,158" marker-end="url(#ah-admin)"/><text class="lb" x="169" y="151" text-anchor="middle" dominant-baseline="central">تقارير الدخل</text></g>
+<g class="fl e-admin"><polyline class="ln" points="108,172 220,172 220,300" marker-end="url(#ah-admin)"/><text class="lb" x="164" y="165" text-anchor="middle" dominant-baseline="central">دمج الملفات</text></g>
+<g class="fl e-admin"><polyline class="ln" points="210,300 210,186 108,186" marker-end="url(#ah-admin)"/><text class="lb" x="159" y="179" text-anchor="middle" dominant-baseline="central">ملفات مكررة</text></g>
+<g class="fl e-admin"><polyline class="ln" points="108,200 200,200 200,300" marker-end="url(#ah-admin)"/><text class="lb" x="154" y="193" text-anchor="middle" dominant-baseline="central">نقل المرضى</text></g>
+<g class="fl e-admin"><polyline class="ln" points="190,300 190,214 108,214" marker-end="url(#ah-admin)"/><text class="lb" x="149" y="207" text-anchor="middle" dominant-baseline="central">الإحصائيات</text></g>
+<g class="fl e-patient"><polyline class="ln" points="360,300 360,56 572,56" marker-end="url(#ah-patient)"/><text class="lb" x="466" y="49" text-anchor="middle" dominant-baseline="central">تأكيد ورابط الجلسة</text></g>
+<g class="fl e-patient"><polyline class="ln" points="572,70 370,70 370,300" marker-end="url(#ah-patient)"/><text class="lb" x="471" y="63" text-anchor="middle" dominant-baseline="central">إجابات الاختبارات</text></g>
+<g class="fl e-patient"><polyline class="ln" points="572,84 380,84 380,300" marker-end="url(#ah-patient)"/><text class="lb" x="476" y="77" text-anchor="middle" dominant-baseline="central">طلب حجز أو إلغاء</text></g>
+<g class="fl e-patient"><polyline class="ln" points="390,300 390,98 572,98" marker-end="url(#ah-patient)"/><text class="lb" x="481" y="91" text-anchor="middle" dominant-baseline="central">المواعيد المتاحة</text></g>
+<g class="fl e-patient"><polyline class="ln" points="572,112 400,112 400,300" marker-end="url(#ah-patient)"/><text class="lb" x="486" y="105" text-anchor="middle" dominant-baseline="central">صلاحيات الاطلاع</text></g>
+<g class="fl e-patient"><polyline class="ln" points="572,126 410,126 410,300" marker-end="url(#ah-patient)"/><text class="lb" x="491" y="119" text-anchor="middle" dominant-baseline="central">بيانات التسجيل</text></g>
+<g class="fl e-patient"><polyline class="ln" points="572,140 420,140 420,300" marker-end="url(#ah-patient)"/><text class="lb" x="496" y="133" text-anchor="middle" dominant-baseline="central">بيانات الدفع</text></g>
+<g class="fl e-patient"><polyline class="ln" points="430,300 430,154 572,154" marker-end="url(#ah-patient)"/><text class="lb" x="501" y="147" text-anchor="middle" dominant-baseline="central">نتيجة التحقق</text></g>
+<g class="fl e-patient"><polyline class="ln" points="440,300 440,168 572,168" marker-end="url(#ah-patient)"/><text class="lb" x="506" y="161" text-anchor="middle" dominant-baseline="central">إيصال وتذكير</text></g>
+<g class="fl e-patient"><polyline class="ln" points="572,182 450,182 450,300" marker-end="url(#ah-patient)"/><text class="lb" x="511" y="175" text-anchor="middle" dominant-baseline="central">بحث عن طبيب</text></g>
+<g class="fl e-patient"><polyline class="ln" points="572,196 460,196 460,300" marker-end="url(#ah-patient)"/><text class="lb" x="516" y="189" text-anchor="middle" dominant-baseline="central">رسائل الشات</text></g>
+<g class="fl e-patient"><polyline class="ln" points="470,300 470,210 572,210" marker-end="url(#ah-patient)"/><text class="lb" x="521" y="203" text-anchor="middle" dominant-baseline="central">تقدم العلاج</text></g>
+<g class="fl e-patient"><polyline class="ln" points="572,224 480,224 480,300" marker-end="url(#ah-patient)"/><text class="lb" x="526" y="217" text-anchor="middle" dominant-baseline="central">رمز التحقق</text></g>
+<g class="fl e-patient"><polyline class="ln" points="490,300 490,238 572,238" marker-end="url(#ah-patient)"/><text class="lb" x="531" y="231" text-anchor="middle" dominant-baseline="central">رد الطبيب</text></g>
+<g class="fl e-doctor"><polyline class="ln" points="480,470 480,524 572,524" marker-end="url(#ah-doctor)"/><text class="lb" x="526" y="517" text-anchor="middle" dominant-baseline="central">رسائل المرضى</text></g>
+<g class="fl e-doctor"><polyline class="ln" points="470,470 470,538 572,538" marker-end="url(#ah-doctor)"/><text class="lb" x="521" y="531" text-anchor="middle" dominant-baseline="central">تنبيه التأخر</text></g>
+<g class="fl e-doctor"><polyline class="ln" points="572,552 460,552 460,470" marker-end="url(#ah-doctor)"/><text class="lb" x="516" y="545" text-anchor="middle" dominant-baseline="central">بيانات الدخول</text></g>
+<g class="fl e-doctor"><polyline class="ln" points="572,566 450,566 450,470" marker-end="url(#ah-doctor)"/><text class="lb" x="511" y="559" text-anchor="middle" dominant-baseline="central">رد على المريض</text></g>
+<g class="fl e-doctor"><polyline class="ln" points="440,470 440,580 572,580" marker-end="url(#ah-doctor)"/><text class="lb" x="506" y="573" text-anchor="middle" dominant-baseline="central">تذكير بالجلسة</text></g>
+<g class="fl e-doctor"><polyline class="ln" points="572,594 430,594 430,470" marker-end="url(#ah-doctor)"/><text class="lb" x="501" y="587" text-anchor="middle" dominant-baseline="central">ملاحظات الجلسة</text></g>
+<g class="fl e-doctor"><polyline class="ln" points="572,608 420,608 420,470" marker-end="url(#ah-doctor)"/><text class="lb" x="496" y="601" text-anchor="middle" dominant-baseline="central">طلب ملف المريض</text></g>
+<g class="fl e-doctor"><polyline class="ln" points="410,470 410,622 572,622" marker-end="url(#ah-doctor)"/><text class="lb" x="491" y="615" text-anchor="middle" dominant-baseline="central">تقويم الحجوزات</text></g>
+<g class="fl e-doctor"><polyline class="ln" points="572,636 400,636 400,470" marker-end="url(#ah-doctor)"/><text class="lb" x="486" y="629" text-anchor="middle" dominant-baseline="central">الأوقات المتاحة</text></g>
+<g class="fl e-doctor"><polyline class="ln" points="390,470 390,650 572,650" marker-end="url(#ah-doctor)"/><text class="lb" x="481" y="643" text-anchor="middle" dominant-baseline="central">ملف المريض بإذنه</text></g>
+<g class="fl e-doctor"><polyline class="ln" points="572,664 380,664 380,470" marker-end="url(#ah-doctor)"/><text class="lb" x="476" y="657" text-anchor="middle" dominant-baseline="central">اختيار صوت أو فيديو</text></g>
+<g class="fl e-payment"><polyline class="ln" points="200,470 200,524 108,524" marker-end="url(#ah-payment)"/><text class="lb" x="154" y="517" text-anchor="middle" dominant-baseline="central">طلب دفع</text></g>
+<g class="fl e-payment"><polyline class="ln" points="210,470 210,538 108,538" marker-end="url(#ah-payment)"/><text class="lb" x="159" y="531" text-anchor="middle" dominant-baseline="central">طلب استرداد</text></g>
+<g class="fl e-payment"><polyline class="ln" points="108,552 220,552 220,470" marker-end="url(#ah-payment)"/><text class="lb" x="164" y="545" text-anchor="middle" dominant-baseline="central">نتيجة الدفع</text></g>
+<g class="fl e-payment"><polyline class="ln" points="108,566 230,566 230,470" marker-end="url(#ah-payment)"/><text class="lb" x="169" y="559" text-anchor="middle" dominant-baseline="central">رقم المعاملة</text></g>
+<g class="fl e-sms"><polyline class="ln" points="250,470 250,640 108,640" marker-end="url(#ah-sms)"/><text class="lb" x="179" y="633" text-anchor="middle" dominant-baseline="central">رمز التحقق</text></g>
+<g class="fl e-sms"><polyline class="ln" points="108,654 260,654 260,470" marker-end="url(#ah-sms)"/><text class="lb" x="184" y="647" text-anchor="middle" dominant-baseline="central">فشل الإرسال</text></g>
+<g class="fl e-sms"><polyline class="ln" points="270,470 270,668 108,668" marker-end="url(#ah-sms)"/><text class="lb" x="189" y="661" text-anchor="middle" dominant-baseline="central">تنبيه انقطاع</text></g>
+<g class="fl e-sms"><polyline class="ln" points="108,682 280,682 280,470" marker-end="url(#ah-sms)"/><text class="lb" x="194" y="675" text-anchor="middle" dominant-baseline="central">حالة الإرسال</text></g>
+<g class="fl e-sms"><polyline class="ln" points="290,470 290,696 108,696" marker-end="url(#ah-sms)"/><text class="lb" x="199" y="689" text-anchor="middle" dominant-baseline="central">تذكير بالموعد</text></g>
+<g class="fl e-sms"><polyline class="ln" points="300,470 300,710 108,710" marker-end="url(#ah-sms)"/><text class="lb" x="204" y="703" text-anchor="middle" dominant-baseline="central">إشعار محتوى جديد</text></g>
+<g class="fl e-video"><polyline class="ln" points="350,470 350,700 572,700" marker-end="url(#ah-video)"/><text class="lb" x="461" y="693" text-anchor="middle" dominant-baseline="central">طلب إنشاء غرفة</text></g>
+<g class="fl e-video"><polyline class="ln" points="340,470 340,714 572,714" marker-end="url(#ah-video)"/><text class="lb" x="456" y="707" text-anchor="middle" dominant-baseline="central">إنهاء الجلسة</text></g>
+<g class="fl e-video"><polyline class="ln" points="572,728 330,728 330,470" marker-end="url(#ah-video)"/><text class="lb" x="451" y="721" text-anchor="middle" dominant-baseline="central">حالة الاتصال</text></g>
+<g class="fl e-video"><polyline class="ln" points="572,742 320,742 320,470" marker-end="url(#ah-video)"/><text class="lb" x="446" y="735" text-anchor="middle" dominant-baseline="central">رابط الجلسة</text></g>
+<g class="ent" data-e="admin" tabindex="0"><rect class="bx" x="3" y="43" width="100" height="178"/><rect class="bx" x="8" y="48" width="100" height="178"/><text class="nm" x="58" y="129" text-anchor="middle" dominant-baseline="central">مدير النظام</text><text class="lb" x="58" y="149" text-anchor="middle" dominant-baseline="central" style="opacity:.7">12 تدفقًا</text></g>
+<g class="ent" data-e="patient" tabindex="0"><rect class="bx" x="567" y="39" width="100" height="206"/><rect class="bx" x="572" y="44" width="100" height="206"/><text class="nm" x="622" y="139" text-anchor="middle" dominant-baseline="central">المريض</text><text class="lb" x="622" y="159" text-anchor="middle" dominant-baseline="central" style="opacity:.7">14 تدفقًا</text></g>
+<g class="ent" data-e="payment" tabindex="0"><rect class="bx" x="3" y="509" width="100" height="64"/><rect class="bx" x="8" y="514" width="100" height="64"/><text class="nm" x="58" y="538" text-anchor="middle" dominant-baseline="central">بوابة الدفع</text><text class="lb" x="58" y="558" text-anchor="middle" dominant-baseline="central" style="opacity:.7">4 تدفقًا</text></g>
+<g class="ent" data-e="sms" tabindex="0"><rect class="bx" x="3" y="625" width="100" height="92"/><rect class="bx" x="8" y="630" width="100" height="92"/><text class="nm" x="58" y="668" text-anchor="middle" dominant-baseline="central">خدمة الرسائل</text><text class="lb" x="58" y="688" text-anchor="middle" dominant-baseline="central" style="opacity:.7">6 تدفقًا</text></g>
+<g class="ent" data-e="doctor" tabindex="0"><rect class="bx" x="567" y="509" width="100" height="162"/><rect class="bx" x="572" y="514" width="100" height="162"/><text class="nm" x="622" y="587" text-anchor="middle" dominant-baseline="central">الطبيب</text><text class="lb" x="622" y="607" text-anchor="middle" dominant-baseline="central" style="opacity:.7">11 تدفقًا</text></g>
+<g class="ent" data-e="video" tabindex="0"><rect class="bx" x="567" y="685" width="100" height="64"/><rect class="bx" x="572" y="690" width="100" height="64"/><text class="nm" x="622" y="714" text-anchor="middle" dominant-baseline="central">خدمة الفيديو</text><text class="lb" x="622" y="734" text-anchor="middle" dominant-baseline="central" style="opacity:.7">4 تدفقًا</text></g></svg></div>
+<div class="cap">DFD context level &nbsp; شكل (1-1)</div>
+<table><thead><tr><th>الكيان الخارجي</th><th>يرسل إلى النظام</th><th>يستقبل من النظام</th></tr></thead><tbody><tr data-e="patient"><th>المريض</th><td>بيانات التسجيل، رمز التحقق، بحث عن طبيب، طلب حجز أو إلغاء، رسائل الشات، إجابات الاختبارات، بيانات الدفع، صلاحيات الاطلاع</td><td>نتيجة التحقق، المواعيد المتاحة، تأكيد ورابط الجلسة، رد الطبيب، تقدم العلاج، إيصال وتذكير</td></tr><tr data-e="doctor"><th>الطبيب</th><td>بيانات الدخول، الأوقات المتاحة، ملاحظات الجلسة، رد على المريض، اختيار صوت أو فيديو، طلب ملف المريض</td><td>تقويم الحجوزات، ملف المريض بإذنه، رسائل المرضى، تنبيه التأخر، تذكير بالجلسة</td></tr><tr data-e="admin"><th>مدير النظام</th><td>إدارة المستخدمين، تحديد الصلاحيات، الفروع والأسعار، مواعيد العمل، نقل المرضى، دمج الملفات، محتوى الاسترخاء</td><td>تقارير الدخل، الإحصائيات، إشعارات الغياب، ملفات مكررة، تنبيهات أمنية</td></tr><tr data-e="payment"><th>بوابة الدفع</th><td>نتيجة الدفع، رقم المعاملة</td><td>طلب دفع، طلب استرداد</td></tr><tr data-e="sms"><th>خدمة الرسائل</th><td>حالة الإرسال، فشل الإرسال</td><td>رمز التحقق، تذكير بالموعد، تنبيه انقطاع، إشعار محتوى جديد</td></tr><tr data-e="video"><th>خدمة الفيديو</th><td>رابط الجلسة، حالة الاتصال</td><td>طلب إنشاء غرفة، إنهاء الجلسة</td></tr></tbody></table>
+<div class="pn">~ 1 ~</div>
+</main>
+<script>
+const svg=document.getElementById('dfd');
+function focusE(e){svg.dataset.f=e;svg.querySelectorAll('.fl,.ent').forEach(n=>n.classList.toggle('hl',n.classList.contains('e-'+e)||n.dataset.e===e));document.querySelectorAll('tbody tr').forEach(r=>r.classList.toggle('hl',r.dataset.e===e))}
+function clr(){delete svg.dataset.f;svg.querySelectorAll('.hl').forEach(n=>n.classList.remove('hl'));document.querySelectorAll('tbody tr').forEach(r=>r.classList.remove('hl'))}
+svg.querySelectorAll('.ent').forEach(n=>{n.addEventListener('mouseenter',()=>focusE(n.dataset.e));n.addEventListener('mouseleave',clr);n.addEventListener('focus',()=>focusE(n.dataset.e));n.addEventListener('blur',clr);n.addEventListener('click',()=>focusE(n.dataset.e))});
+document.querySelectorAll('tbody tr').forEach(r=>{r.addEventListener('mouseenter',()=>focusE(r.dataset.e));r.addEventListener('mouseleave',clr)});
+document.getElementById('th').onclick=()=>{const d=document.documentElement;d.dataset.theme=d.dataset.theme==='dark'?'light':'dark'};
+</script></body></html>
